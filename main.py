@@ -72,7 +72,7 @@ def Run(path, classifier):
     charLabels =['ba', 'ta', 'tha', 'gim', 'ha', 'kha', 'dal' ,'thal', 'ra', 'zay', 'sin', 'shin', 'sad', 'dad', 'tah', 'za', 'ayn', 'gayn', 'fa', 'qaf', 'kaf', 'lam', 'mim', 'non', 'haa', 'waw', 'ya']
     positionsLabels=['Beginning','End','Isolated','Middle']
 
-    word = ''
+    word = ""
     #classifier = joblib.load('classifier0.pkl')
     folder= getListOfFiles(path)
     count=0
@@ -88,7 +88,6 @@ def Run(path, classifier):
         data2 = np.array(data1).reshape(-1, numOfFeatures)
         prediction = classifier.predict(data2)
         count=count+1
-        print(f"Prediction for letter {count}: {prediction[0]}")
         #cv.imshow('image',binary_img)
         char=labeltochar(prediction[0])
         word=word+char
@@ -104,7 +103,6 @@ def get_prediction(user_code, model):
         print("No characters found for user")
         return
     
-    characters = []
     words = []
     lines = []
     for line in os.listdir(f"Data/characters/{user_code}/"):
@@ -131,12 +129,21 @@ def extract_lines_from_image(image, user_code, model):
     cv.imwrite(image_path, image)
     
     lines = segment_lines(image_path)
+    
     save_lines(lines, user_code)
+    
     words_path = save_words(lines, user_code)
+    
     segment_characters(words_path, user_code)
-    lines = get_prediction(user_code, model)
+    
+    lines_text = get_prediction(user_code, model)
 
-    return lines
+    line_string = ""
+    for line in lines_text:
+        line_string += line + "\n"
+    
+    return lines_text
     
 # classifier = joblib.load('classifier0.pkl')  
-# main('D:/UNI/CCE_sem_8_LAST_YAY_^^/gp2/project/Alfarahifi_org/arabic-ocr/paragraphs_per_user/paragraphs_per_user/user001/com_paragraph.png', "user_1", classifier)
+# image = cv.imread('D:/UNI/CCE_sem_8_LAST_YAY_^^/gp2/project/Alfarahifi_org/arabic-ocr/paragraphs_per_user/paragraphs_per_user/user001/com_paragraph.png', cv.IMREAD_GRAYSCALE)
+# extract_lines_from_image(image, "user_1", classifier)
