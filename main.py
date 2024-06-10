@@ -100,8 +100,7 @@ def Run(path, classifier):
         
 def get_prediction(user_code, model):
     if not os.path.exists(f"Data/characters/{user_code}/"):
-        print("No characters found for user")
-        return
+        return[""]
     
     words = []
     lines = []
